@@ -83,7 +83,7 @@ pool.on('peerdisconnect', (peer) => {
 });
 
 pool.on('disconnect', () => {
-   peerblock.log('connection closed, please restart');
+  connectedPeers.log('connection closed, please restart');
 });
 
 // UI exit
