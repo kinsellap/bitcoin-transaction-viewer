@@ -11,4 +11,11 @@
 2. `npm start`
 
 # UI 
+- When the program starts you are presented with a console UI that has 3 sections
+  - Peers
+    - Contains details about peer connections and status
+  - Blocks
+    - Contains details about Blocks
+  - Block Transactions
+    - List of all transactions in the block 
 ![image](https://user-images.githubusercontent.com/112111540/236700525-9cf90b02-35d8-42c8-a61a-13510f8f9a7f.png)

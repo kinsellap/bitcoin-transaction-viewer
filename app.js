@@ -53,7 +53,7 @@ pool.on('peerblock', (peer, message) => {
   var totalValue = 0;
   block.transactions.forEach(tx => {
     const txValue = SatoshiConverter.toBitcoin(tx.outputs.map(tx => tx.satoshis).reduce((prev, curr)=> prev+curr,0));
-    transactions.log(`Hash: ${tx.hash}, Tx Value : ${txValue}`);
+    transactions.log(`Block Hash, ${header.hash}, Tx Hash: ${tx.hash}, Tx Value : ${txValue}`);
     totalValue += txValue;
   })
   blocks.log(`Date added:${dateAdded},Hash:${header.hash},Nonce:${header.nonce},Difficulty:${difficulty},TX count:${block.transactions.length},Total value:${totalValue}`);
