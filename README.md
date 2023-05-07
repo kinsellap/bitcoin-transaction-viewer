@@ -20,7 +20,7 @@
   - Block Transactions
     - List of all transactions in the block 
 
-![image](https://user-images.githubusercontent.com/112111540/236700832-85814984-c5f7-4b58-8222-7266d7c65567.png)
+![image](https://user-images.githubusercontent.com/112111540/236702033-43498aa9-8955-4c57-8f9a-30301c3ad94e.png)
 
 # Exit
 - press `escape`
