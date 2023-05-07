@@ -7,10 +7,10 @@ const formatDateTime = require("./date-time-utils").formatDateTime;
 const BlessedContrib = require('blessed-contrib');
 const Blessed = require('blessed');
 
-/**
+/*
  *  Maintains a connection of peers discovered via DNS seeds
  *  When a peer disconnets it will add another
- *  */
+ */
 var pool = new Pool({
   network: Networks.livenet,
   maxSize: 1 // the maximum number of peers in this pool
@@ -40,7 +40,12 @@ pool.on('peerready', peer => {
   connectedPeers.log(`Peer: ${peer.version}, ${peer.subversion}, ${peer.bestHeight}, ${peer.host} Status: ${ peer.status }` );
 });
 
-// listener for inventory events on a connection, 1 = transaction, 2 = block
+/*
+ * listener for inventory events on a connection,
+ * 1 = transaction 
+ * 2 = block
+ * sends relevant messages to peer to retrieve event data 
+ */ 
 pool.on('peerinv', (peer, message) => {
   message.inventory.forEach(i => {
     var messageData;
@@ -53,7 +58,10 @@ pool.on('peerinv', (peer, message) => {
   });
 });
 
-// listener for block messages on a connection
+/*
+ * listener for block messages on a connection
+ * received when getData.forBlock called on the hash of an inventory message
+ */ 
 pool.on('peerblock', (peer, message) => {
   const { block } = message;
   const { header } = block;
@@ -61,6 +69,7 @@ pool.on('peerblock', (peer, message) => {
   const difficulty = BtcDiff.bitsToDiff(header.bits);
   var totalValue = 0;
   block.transactions.forEach(tx => {
+    // convert transaction satoshis to bitcoin value
     const txValue = SatoshiConverter.toBitcoin(tx.outputs.map(tx => tx.satoshis).reduce((prev, curr)=> prev+curr,0));
     transactions.log(`Block Hash:${header.hash}, Tx Hash: ${tx.hash}, Tx Value : ${txValue}`);
     totalValue += txValue;
