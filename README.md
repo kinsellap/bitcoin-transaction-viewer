@@ -18,4 +18,7 @@
     - Contains details about Blocks
   - Block Transactions
     - List of all transactions in the block 
-![image](https://user-images.githubusercontent.com/112111540/236700525-9cf90b02-35d8-42c8-a61a-13510f8f9a7f.png)
+
+
+![image](https://user-images.githubusercontent.com/112111540/236700832-85814984-c5f7-4b58-8222-7266d7c65567.png)
+
