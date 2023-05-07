@@ -1,0 +1,19 @@
+{
+  "name": "bitcoin-transaction-viewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Peter Kinsella",
+  "license": "ISC",
+  "dependencies": {
+    "bitcoin-diff": "^1.0.0",
+    "bitcore-lib": "^10.0.5",
+    "bitcore-p2p": "^10.0.5",
+    "nodemon": "^2.0.22",
+    "satoshi-bitcoin": "^1.0.5"
+  }
+}
