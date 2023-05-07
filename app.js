@@ -56,7 +56,7 @@ pool.on('peerblock', (peer, message) => {
     transactions.log(`Block Hash, ${header.hash}, Tx Hash: ${tx.hash}, Tx Value : ${txValue}`);
     totalValue += txValue;
   })
-  blocks.log(`Date added:${dateAdded},Hash:${header.hash},Nonce:${header.nonce},Difficulty:${difficulty},TX count:${block.transactions.length},Total value:${totalValue}`);
+  blocks.log(`Hash:${header.hash},Date added:${dateAdded},Nonce:${header.nonce},Difficulty:${difficulty},TX count:${block.transactions.length},Total value:${totalValue}`);
 });
 
 pool.on('peerdisconnect', (peer) => {
