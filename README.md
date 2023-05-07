@@ -8,7 +8,8 @@
 # Running
 1. `git clone https://github.com/kinsellap/bitcoin-transaction-viewer.git`
 2. `cd bitcoin-transaction-viewer`
-2. `npm start`
+3. `npm install`
+4. `npm start`
 
 # UI 
 - When the program starts you are presented with a console UI that has 3 sections
