@@ -13,6 +13,8 @@
     "bitcoin-diff": "^1.0.0",
     "bitcore-lib": "^10.0.5",
     "bitcore-p2p": "^10.0.5",
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.11.0",
     "nodemon": "^2.0.22",
     "satoshi-bitcoin": "^1.0.5"
   }

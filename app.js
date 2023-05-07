@@ -1,16 +1,36 @@
 const Messages = require('bitcore-p2p').Messages;
 const Pool = require('bitcore-p2p').Pool;
 const Networks = require('bitcore-lib').Networks;
-const satoshiConverter = require("satoshi-bitcoin");
-const btcDiff = require('bitcoin-diff')
+const SatoshiConverter = require("satoshi-bitcoin");
+const BtcDiff = require('bitcoin-diff')
 const formatDateTime = require("./date-time-utils").formatDateTime;
+const BlessedContrib = require('blessed-contrib');
+const Blessed = require('blessed');
 var pool = new Pool({
   network: Networks.livenet,
   maxSize: 1
 });
 
+const Screen = Blessed.screen();
+const Grid = new BlessedContrib.grid({ rows: 5, cols: 1, screen: Screen });
+
+const connectedPeers = Grid.set(0, 0, 1, 1, BlessedContrib.log, {
+  fg: 'blue',
+  label: 'Peers'
+});
+
+const blocks = Grid.set(1, 0, 1, 1, BlessedContrib.log, {
+  fg: 'yellow',
+  label: 'Blocks'
+});
+
+const transactions = Grid.set(2, 0, 3, 1, BlessedContrib.log, {
+  fg: 'green',
+  label: 'Block Transactions'
+});
+
 pool.on('peerready', peer => {
-  console.log(`${peer.version}, ${peer.subversion}, ${peer.bestHeight}, ${peer.host}`);
+  connectedPeers.log(`Peer: ${peer.version}, ${peer.subversion}, ${peer.bestHeight}, ${peer.host} Status: ${ peer.status }` );
 });
 
 pool.on('peerinv', (peer, message) => {
@@ -28,35 +48,29 @@ pool.on('peerinv', (peer, message) => {
 pool.on('peerblock', (peer, message) => {
   const { block } = message;
   const { header } = block;
-  console.log(`Block transaction: ${peer.version}, ${peer.subversion}, ${peer.bestHeight}, ${peer.host} `);
   const dateAdded = formatDateTime(header.time);
-  // const difficulty = btcDiff(header.bits);
-  console.log(`Date added       : ${dateAdded}`);
-  console.log(`Hash             : ${header.hash}`);
-  console.log(`Nonce            : ${header.nonce}`);
-  // console.log(`Difficulty: ${difficulty}`);
-  console.log(`Transaction count: ${block.transactions.length}`);
-  const txMap = new Map();
+  const difficulty = BtcDiff.bitsToDiff(header.bits);
   var totalValue = 0;
   block.transactions.forEach(tx => {
-    const txValue = satoshiConverter.toBitcoin(tx.outputs.map(tx => tx.satoshis).reduce((prev, curr)=> prev+curr,0));
-    txMap.set(tx.hash,txValue);
+    const txValue = SatoshiConverter.toBitcoin(tx.outputs.map(tx => tx.satoshis).reduce((prev, curr)=> prev+curr,0));
+    transactions.log(`Hash: ${tx.hash}, Tx Value : ${txValue}`);
     totalValue += txValue;
   })
-
-  console.log(`Total block vlaue: ${totalValue}`);
-  const [firstKey] = txMap.keys();
-  console.log(firstKey); 
-
-  const [firstValue] = txMap.values();
-  console.log(firstValue)
+  blocks.log(`Date added:${dateAdded},Hash:${header.hash},Nonce:${header.nonce},Difficulty:${difficulty},TX count:${block.transactions.length},Total value:${totalValue}`);
 });
 
 pool.on('peerdisconnect', (peer) => {
-  console.log(`Peer ${peer.host} disconnected`);
+  connectedPeers.log(`Peer: ${peer.host} Status: disconnected`);
 });
 
 pool.on('disconnect', () => {
-  console.log('connection closed');
+   peerblock.log('connection closed, please restart');
 });
+
+Screen.key(['escape', 'q', 'C-c'], () => {
+  pool.disconnect();
+  process.exit(0);
+});
+
 pool.connect();
+Screen.render();
